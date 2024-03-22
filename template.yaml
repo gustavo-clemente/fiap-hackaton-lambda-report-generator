@@ -1,0 +1,26 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Report Lambda access
+
+Globals:
+  Function:
+    Runtime: nodejs18.x
+
+Resources:
+  MyFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      CodeUri: ./
+      Timeout: 30  # Aumenta o tempo limite para 30 segundos
+      Environment:
+        Variables:
+          EMAIL_TOKEN: ${EMAIL_TOKEN}
+          SENDER_EMAIL: ${SENDER_EMAIL}
+          REPORT_BASE_URL: ${REPORT_BASE_URL:}
+      Events:
+        MyApi:
+          Type: Api
+          Properties:
+            Path: /report
+            Method: post
